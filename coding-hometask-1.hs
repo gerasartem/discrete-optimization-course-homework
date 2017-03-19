@@ -1,4 +1,5 @@
 import Data.List (sortBy)
+import Data.Ratio
 
 able_to_pack :: [Rational] -> [Rational] -> [Rational] -> Bool
 able_to_pack [] _ _ = True
@@ -22,9 +23,10 @@ bins_num bins = solve_bp_evaluation $ map (sum) bins
 join_two_bins :: [Rational] -> [[Rational]] -> [[Rational]] -> [[Rational]]
 join_two_bins _ [] _ = error "Somethig went totally wrong!"
 join_two_bins current_bin (b:bs) bw = let other_bins = bs ++ bw
-				      in if (bins_num $ other_bins ++ [current_bin] ++ [b])
-					 == (bins_num $ other_bins ++ [current_bin ++ b])
-					 then [current_bin ++ b] ++ bw ++ bs
+				      in if (sum (current_bin ++ b) <= (1 :: Rational)) &&
+					 ((bins_num $ other_bins ++ [current_bin] ++ [b])
+					 == (bins_num $ other_bins ++ [current_bin ++ b]))
+					 then bw ++ [current_bin ++ b] ++ bs
 					 else join_two_bins current_bin bs (bw ++ [b])
 
 
