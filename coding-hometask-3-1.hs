@@ -93,7 +93,7 @@ getWorkTime findTour points = do
                              return (fromInteger (endTime - startTime) / 1e12 , round tourLength)
 
 
-runFile :: [String] -> IO ()
+runFile :: String -> IO ()
 runFile file = do
                 points <- readTspFile file 
                 (nearest_neighbour_time, nearest_neighbour_length) <- getWorkTime solveTspNearestNeighbour points
@@ -105,7 +105,7 @@ runFile file = do
 
 
 runAllFiles :: [String] -> IO ()
-runAllFiles files = sequence_ . map runFile files 
+runAllFiles = sequence_ . map runFile
 
 
 main = do
